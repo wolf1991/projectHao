@@ -150,8 +150,9 @@
 				<u--text text="2、h.高速电梯补偿绳反绳轮距离轿底最低部件" size="20"></u--text>
 				<u--text text="3、i.底坑中有一个不小于0.50m×0.60m×1.00m的空间（任一平面朝下均可）" size="20"></u--text>
 			</view>
-			<u-button class="ml-20" style="flex-basis: 30%;" text="清空" type="primary" :plain="false" @click="clear"></u-button>
+			<u-button class="ml-20" style="flex-basis: 30%;" text="清空" type="primary" :plain="false" @click="show"></u-button>
 		</view>
+		<u-modal :show="showModal" title="清空" content="确认清空表单吗?" confirmText="确认" cancelText="取消" :showCancelButton="true" @confirm="clear" @cancel="cancel"></u-modal>
 	</view>
 </template>
 
@@ -179,6 +180,8 @@
 				wallDist: null,
 				cwToCarDist: null,
 				cwOverrunDist: null,
+
+				showModal: false
 			}
 		},
 		onLoad() {
@@ -219,7 +222,7 @@
 			topOutput: function() {
 				return this.topInput - this.cwBuffer - this.cwMaxDist - (this.speed * this.speed * 0.035);
 			},
-			bottomOutput: function() {1
+			bottomOutput: function() {
 				return this.bottomInput - this.cwBuffer - this.cwMaxDist - (this.speed * this.speed * 0.035);
 			},
 			carBottomToFloorDistOutput: function() {
@@ -257,6 +260,12 @@
 					data: stringifyData
 				});
 			},
+			show() {
+				this.showModal = true;
+			},
+			cancel() {
+				this.showModal = false;
+			},
 			clear() {
 				this.title = '';
 				this.speed = null;
@@ -277,6 +286,8 @@
 				this.wallDist = null;
 				this.cwToCarDist = null;
 				this.cwOverrunDist = null;
+				
+				this.showModal = false;
 			}
 		}
 	}
